@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise Combinatória - Banca Exata</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Cores Principais */
+            --primary-color: #fac95f;
+            --secondary-color: #00bf63;
+            --accent-color: #b3d8dd;
+            --tertiary-color: #f0c36f;
+            
+            /* Cores Neutras */
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --white: #ffffff;
+            --gray-light: #f8f9fa;
+            --gray-medium: #6c757d;
+            --gray-dark: #495057;
+            
+            /* Gradientes */
+            --gradient-primary: linear-gradient(135deg, #fac95f 0%, #f0c36f 100%);
+            --gradient-secondary: linear-gradient(135deg, #00bf63 0%, #00a055 100%);
+            --gradient-accent: linear-gradient(135deg, #b3d8dd 0%, #9bc5ca 100%);
+            
+            /* Tipografia */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-weight-light: 300;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            
+            /* Espaçamentos */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --spacing-xxl: 4rem;
+            
+            /* Bordas e Sombras */
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 24px;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.15);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.1);
+            
+            /* Transições */
+            --transition-fast: 0.2s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: var(--gray-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+            padding: var(--spacing-sm) 0;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-lg);
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: var(--font-weight-medium);
+            transition: var(--transition-normal);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-primary);
+            padding: calc(60px + var(--spacing-xxl)) var(--spacing-lg) var(--spacing-xxl);
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: var(--spacing-xl);
+            opacity: 0.95;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--spacing-xl);
+            overflow: hidden;
+            transition: var(--transition-normal);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            background: var(--gradient-primary);
+            padding: var(--spacing-lg);
+            color: white;
+        }
+
+        .card-header h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: var(--font-weight-bold);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .card-header h3 {
+            font-size: 1.3rem;
+            font-weight: var(--font-weight-semibold);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .card-content {
+            padding: var(--spacing-lg);
+        }
+
+        /* Seções de Conteúdo */
+        .content-section {
+            margin: var(--spacing-xxl) 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        /* Elementos Especiais */
+        .formula-box {
+            background: rgba(250, 201, 95, 0.1);
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            text-align: center;
+        }
+
+        .formula {
+            font-size: 1.2rem;
+            font-weight: var(--font-weight-semibold);
+            color: var(--dark-color);
+        }
+
+        .exemplo {
+            background: rgba(0, 191, 99, 0.1);
+            border-left: 4px solid var(--secondary-color);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            border-radius: var(--border-radius-sm);
+        }
+
+        .dica {
+            background: rgba(240, 195, 111, 0.1);
+            border-left: 4px solid var(--tertiary-color);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            border-radius: var(--border-radius-sm);
+        }
+
+        /* Questões */
+        .questao-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--spacing-xl);
+            overflow: hidden;
+        }
+
+        .questao-header {
+            background: var(--gradient-secondary);
+            padding: var(--spacing-lg);
+            color: white;
+        }
+
+        .questao-tags {
+            margin-top: var(--spacing-sm);
+            display: flex;
+            gap: var(--spacing-xs);
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.85rem;
+            font-weight: var(--font-weight-medium);
+        }
+
+        .alternativas {
+            margin: var(--spacing-md) 0;
+        }
+
+        .alternativa {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            margin: var(--spacing-xs) 0;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            border: 2px solid transparent;
+        }
+
+        .alternativa:hover {
+            background: var(--gray-light);
+            border-color: var(--primary-color);
+        }
+
+        .alternativa.correta {
+            background: rgba(0, 191, 99, 0.1);
+            border-color: var(--secondary-color);
+        }
+
+        .alternativa.incorreta {
+            background: rgba(220, 53, 69, 0.1);
+            border-color: #dc3545;
+        }
+
+        .alternativa input[type="radio"] {
+            margin-top: 2px;
+        }
+
+        /* Botões */
+        .btn {
+            display: inline-block;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--border-radius-md);
+            text-decoration: none;
+            font-weight: var(--font-weight-semibold);
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-resposta {
+            background: var(--gradient-secondary);
+            color: white;
+            margin: var(--spacing-md) 0;
+        }
+
+        .btn-resposta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-resposta:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Resposta Comentada */
+        .resposta-comentada {
+            display: none;
+            background: var(--gray-light);
+            padding: var(--spacing-lg);
+            border-top: 3px solid var(--secondary-color);
+        }
+
+        .resposta-comentada.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .resolucao {
+            background: rgba(179, 216, 221, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            border-radius: var(--border-radius-sm);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--spacing-sm);
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero {
+                padding: calc(60px + var(--spacing-lg)) var(--spacing-sm) var(--spacing-lg);
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-content, .questao-content {
+                padding: var(--spacing-md);
+            }
+        }
+
+        /* Animações de Scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            padding: var(--spacing-xl) 0;
+            text-align: center;
+            margin-top: var(--spacing-xxl);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            color: white;
+            font-size: 1.5rem;
+            transition: var(--transition-normal);
+        }
+
+        .social-link:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <img src="img/logo.png" alt="Banca Exata" class="logo">
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="#teoria">Teoria</a></li>
+                        <li><a href="#exemplos">Exemplos</a></li>
+                        <li><a href="#questoes">Questões</a></li>
+                        <li><a href="#especificas">Questões Específicas</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1><i class="fas fa-calculator"></i> Análise Combinatória</h1>
+            <p>Princípio Fundamental da Contagem, Possibilidades e Análise Combinatória para Concursos</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <!-- SEÇÃO TEÓRICA -->
+        <section id="teoria" class="content-section fade-in">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-book"></i> Fundamentos Teóricos</h2>
+                </div>
+                <div class="card-content">
+                    <h3><i class="fas fa-lightbulb"></i> Princípio Fundamental da Contagem</h3>
+                    <p><strong>Definição:</strong> Se um evento A pode ocorrer de m maneiras diferentes e, para cada uma dessas maneiras, um evento B pode ocorrer de n maneiras diferentes, então o número de maneiras de ocorrer o evento A seguido do evento B é m × n.</p>
+                    
+                    <div class="formula-box">
+                        <p><strong>Fórmula Geral:</strong></p>
+                        <span class="formula">Total = n₁ × n₂ × n₃ × ... × nₖ</span>
+                    </div>
+
+                    <div class="exemplo">
+                        <h4><i class="fas fa-play-circle"></i> Exemplo Básico:</h4>
+                        <p>Para formar um código com 1 letra (26 opções) seguida de 1 dígito (10 opções):</p>
+                        <p><strong>Total = 26 × 10 = 260 códigos possíveis</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section fade-in">
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-sort"></i> Permutações</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Definição:</strong> Arranjos onde a ordem importa e todos os elementos são utilizados.</p>
+                        
+                        <div class="formula-box">
+                            <p><strong>Permutação Simples:</strong></p>
+                            <span class="formula">P(n) = n!</span>
+                        </div>
+
+                        <div class="formula-box">
+                            <p><strong>Permutação com Repetição:</strong></p>
+                            <span class="formula">P(n; n₁, n₂, ..., nₖ) = n!/(n₁! × n₂! × ... × nₖ!)</span>
+                        </div>
+
+                        <div class="exemplo">
+                            <h4>Exemplo:</h4>
+                            <p>Anagramas da palavra "CASA":</p>
+                            <p>P(4; 2, 1, 1) = 4!/(2! × 1! × 1!) = 24/2 = 12</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-list"></i> Arranjos</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Definição:</strong> Agrupamentos onde a ordem importa, mas nem todos os elementos são utilizados.</p>
+                        
+                        <div class="formula-box">
+                            <p><strong>Arranjo Simples:</strong></p>
+                            <span class="formula">A(n,p) = n!/(n-p)!</span>
+                        </div>
+
+                        <div class="formula-box">
+                            <p><strong>Arranjo com Repetição:</strong></p>
+                            <span class="formula">AR(n,p) = nᵖ</span>
+                        </div>
+
+                        <div class="exemplo">
+                            <h4>Exemplo:</h4>
+                            <p>Formar códigos de 3 letras distintas com 26 letras:</p>
+                            <p>A(26,3) = 26!/(26-3)! = 26!/23! = 26×25×24 = 15.600</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-users"></i> Combinações</h3>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Definição:</strong> Agrupamentos onde a ordem NÃO importa.</p>
+                        
+                        <div class="formula-box">
+                            <p><strong>Combinação Simples:</strong></p>
+                            <span class="formula">C(n,p) = n!/[p!(n-p)!]</span>
+                        </div>
+
+                        <div class="formula-box">
+                            <p><strong>Combinação com Repetição:</strong></p>
+                            <span class="formula">CR(n,p) = C(n+p-1,p)</span>
+                        </div>
+
+                        <div class="exemplo">
+                            <h4>Exemplo:</h4>
+                            <p>Escolher 3 pessoas de um grupo de 10:</p>
+                            <p>C(10,3) = 10!/(3!×7!) = (10×9×8)/(3×2×1) = 120</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section fade-in">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-line"></i> Dicas Importantes</h2>
+                </div>
+                <div class="card-content">
+                    <div class="dica">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Quando usar cada tipo:</h4>
+                        <ul>
+                            <li><strong>Permutação:</strong> Todos os elementos, ordem importa</li>
+                            <li><strong>Arranjo:</strong> Parte dos elementos, ordem importa</li>
+                            <li><strong>Combinação:</strong> Parte dos elementos, ordem NÃO importa</li>
+                        </ul>
+                    </div>
+
+                    <div class="dica">
+                        <h4><i class="fas fa-question-circle"></i> Perguntas-chave:</h4>
+                        <ul>
+                            <li>A ordem importa? (Se sim: Permutação ou Arranjo)</li>
+                            <li>Uso todos os elementos? (Se sim: Permutação; Se não: Arranjo/Combinação)</li>
+                            <li>Pode repetir elementos? (Usar fórmulas com repetição)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXEMPLOS RESOLVIDOS -->
+        <section id="exemplos" class="content-section fade-in">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-clipboard-check"></i> Exemplos Resolvidos</h2>
+                </div>
+                <div class="card-content">
+                    <div class="exemplo">
+                        <h4><i class="fas fa-1"></i> Exemplo 1: Códigos de Acesso</h4>
+                        <p><strong>Problema:</strong> Quantos códigos de 4 dígitos podem ser formados usando os algarismos de 0 a 9, sem repetição?</p>
+                        
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>1º passo:</strong> Identificar o tipo - É um arranjo (ordem importa, não uso todos os elementos)</p>
+                            <p><strong>2º passo:</strong> Aplicar a fórmula A(n,p) = n!/(n-p)!</p>
+                            <p><strong>3º passo:</strong> A(10,4) = 10!/(10-4)! = 10!/6! = 10×9×8×7 = 5.040</p>
+                            <p><strong>Resposta:</strong> 5.040 códigos diferentes</p>
+                        </div>
+                    </div>
+
+                    <div class="exemplo">
+                        <h4><i class="fas fa-2"></i> Exemplo 2: Comissão</h4>
+                        <p><strong>Problema:</strong> De quantas maneiras podemos formar uma comissão de 5 pessoas escolhidas entre 12 candidatos?</p>
+                        
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>1º passo:</strong> Identificar o tipo - É uma combinação (ordem não importa)</p>
+                            <p><strong>2º passo:</strong> Aplicar a fórmula C(n,p) = n!/[p!(n-p)!]</p>
+                            <p><strong>3º passo:</strong> C(12,5) = 12!/(5!×7!) = (12×11×10×9×8)/(5×4×3×2×1) = 792</p>
+                            <p><strong>Resposta:</strong> 792 maneiras diferentes</p>
+                        </div>
+                    </div>
+
+                    <div class="exemplo">
+                        <h4><i class="fas fa-3"></i> Exemplo 3: Anagramas</h4>
+                        <p><strong>Problema:</strong> Quantos anagramas podem ser formados com as letras da palavra "MATEMATICA"?</p>
+                        
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>1º passo:</strong> Contar as letras: M(2), A(3), T(2), E(1), I(1), C(1) - Total: 10 letras</p>
+                            <p><strong>2º passo:</strong> Usar permutação com repetição</p>
+                            <p><strong>3º passo:</strong> P(10; 2,3,2,1,1,1) = 10!/(2!×3!×2!×1!×1!×1!) = 3.628.800/24 = 151.200</p>
+                            <p><strong>Resposta:</strong> 151.200 anagramas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUESTÕES INTERATIVAS -->
+        <section id="questoes" class="content-section fade-in">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-question"></i> Questões Interativas</h2>
+                </div>
+            </div>
+
+            <!-- Questão Fácil 1 -->
+            <div class="questao-card fade-in" data-questao="1">
+                <div class="questao-header">
+                    <h3>Questão 1 - Nível Fácil</h3>
+                    <div class="questao-tags">
+                        <span class="tag">Princípio Fundamental</span>
+                        <span class="tag">Fácil</span>
+                    </div>
+                </div>
+                <div class="questao-content">
+                    <p>Uma lanchonete oferece 4 tipos de sanduíches, 3 tipos de bebidas e 2 tipos de sobremesa. De quantas maneiras diferentes um cliente pode fazer seu pedido escolhendo um item de cada categoria?</p>
+                    
+                    <div class="alternativas">
+                        <label class="alternativa">
+                            <input type="radio" name="q1" value="a">
+                            <span>a) 9 maneiras</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q1" value="b">
+                            <span>b) 24 maneiras</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q1" value="c">
+                            <span>c) 12 maneiras</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q1" value="d">
+                            <span>d) 18 maneiras</span>
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-resposta" onclick="mostrarResposta(1)">Ver Resposta</button>
+                    
+                    <div class="resposta-comentada" id="resposta1">
+                        <h4><i class="fas fa-check-circle"></i> Gabarito: B) 24 maneiras</h4>
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>Aplicando o Princípio Fundamental da Contagem:</strong></p>
+                            <p>• Sanduíches: 4 opções</p>
+                            <p>• Bebidas: 3 opções</p>
+                            <p>• Sobremesas: 2 opções</p>
+                            <p><strong>Total = 4 × 3 × 2 = 24 maneiras diferentes</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão Fácil 2 -->
+            <div class="questao-card fade-in" data-questao="2">
+                <div class="questao-header">
+                    <h3>Questão 2 - Nível Fácil</h3>
+                    <div class="questao-tags">
+                        <span class="tag">Permutação</span>
+                        <span class="tag">Fácil</span>
+                    </div>
+                </div>
+                <div class="questao-content">
+                    <p>De quantas maneiras podemos organizar 5 pessoas em uma fila?</p>
+                    
+                    <div class="alternativas">
+                        <label class="alternativa">
+                            <input type="radio" name="q2" value="a">
+                            <span>a) 25 maneiras</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q2" value="b">
+                            <span>b) 120 maneiras</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q2" value="c">
+                            <span>c) 60 maneiras</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q2" value="d">
+                            <span>d) 10 maneiras</span>
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-resposta" onclick="mostrarResposta(2)">Ver Resposta</button>
+                    
+                    <div class="resposta-comentada" id="resposta2">
+                        <h4><i class="fas fa-check-circle"></i> Gabarito: B) 120 maneiras</h4>
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>É uma permutação simples:</strong></p>
+                            <p>P(5) = 5! = 5 × 4 × 3 × 2 × 1 = 120</p>
+                            <p><strong>Explicação:</strong> Temos 5 posições na fila e queremos arranjar todas as 5 pessoas, onde a ordem importa.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão Média 1 -->
+            <div class="questao-card fade-in" data-questao="3">
+                <div class="questao-header">
+                    <h3>Questão 3 - Nível Médio</h3>
+                    <div class="questao-tags">
+                        <span class="tag">Combinação</span>
+                        <span class="tag">Médio</span>
+                    </div>
+                </div>
+                <div class="questao-content">
+                    <p>Uma empresa precisa escolher 3 funcionários entre 8 candidatos para formar uma equipe de projeto. De quantas maneiras isso pode ser feito?</p>
+                    
+                    <div class="alternativas">
+                        <label class="alternativa">
+                            <input type="radio" name="q3" value="a">
+                            <span>a) 24 maneiras</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q3" value="b">
+                            <span>b) 56 maneiras</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q3" value="c">
+                            <span>c) 336 maneiras</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q3" value="d">
+                            <span>d) 512 maneiras</span>
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-resposta" onclick="mostrarResposta(3)">Ver Resposta</button>
+                    
+                    <div class="resposta-comentada" id="resposta3">
+                        <h4><i class="fas fa-check-circle"></i> Gabarito: B) 56 maneiras</h4>
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>É uma combinação (ordem não importa):</strong></p>
+                            <p>C(8,3) = 8!/(3! × 5!) = (8 × 7 × 6)/(3 × 2 × 1) = 336/6 = 56</p>
+                            <p><strong>Explicação:</strong> A ordem dos funcionários escolhidos não importa, apenas quem foi selecionado.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão Média 2 -->
+            <div class="questao-card fade-in" data-questao="4">
+                <div class="questao-header">
+                    <h3>Questão 4 - Nível Médio</h3>
+                    <div class="questao-tags">
+                        <span class="tag">Permutação com Repetição</span>
+                        <span class="tag">Médio</span>
+                    </div>
+                </div>
+                <div class="questao-content">
+                    <p>Quantos anagramas podem ser formados com as letras da palavra "BANANA"?</p>
+                    
+                    <div class="alternativas">
+                        <label class="alternativa">
+                            <input type="radio" name="q4" value="a">
+                            <span>a) 720 anagramas</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q4" value="b">
+                            <span>b) 60 anagramas</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q4" value="c">
+                            <span>c) 120 anagramas</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q4" value="d">
+                            <span>d) 30 anagramas</span>
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-resposta" onclick="mostrarResposta(4)">Ver Resposta</button>
+                    
+                    <div class="resposta-comentada" id="resposta4">
+                        <h4><i class="fas fa-check-circle"></i> Gabarito: B) 60 anagramas</h4>
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>Análise das letras:</strong></p>
+                            <p>• BANANA tem 6 letras: B(1), A(3), N(2)</p>
+                            <p><strong>Permutação com repetição:</strong></p>
+                            <p>P(6; 1,3,2) = 6!/(1! × 3! × 2!) = 720/(1 × 6 × 2) = 720/12 = 60</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUESTÕES ESPECÍFICAS -->
+        <section id="especificas" class="content-section fade-in">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-star"></i> Questões Específicas</h2>
+                </div>
+            </div>
+
+            <!-- Questão Específica 1 -->
+            <div class="questao-card fade-in" data-questao="5">
+                <div class="questao-header">
+                    <h3>Questão 5</h3>
+                    <div class="questao-tags">
+                        <span class="tag">Arranjo</span>
+                        <span class="tag">Específica</span>
+                    </div>
+                </div>
+                <div class="questao-content">
+                    <p>Com as letras da palavra TROCAS é possível construir mais de 300 pares distintos de letras.</p>
+                    
+                    <div class="alternativas">
+                        <label class="alternativa">
+                            <input type="radio" name="q5" value="a">
+                            <span>a) Verdadeiro</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q5" value="b">
+                            <span>b) Falso</span>
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-resposta" onclick="mostrarResposta(5)">Ver Resposta</button>
+                    
+                    <div class="resposta-comentada" id="resposta5">
+                        <h4><i class="fas fa-times-circle"></i> Gabarito: B) Falso</h4>
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>Análise da palavra TROCAS:</strong></p>
+                            <p>• Tem 6 letras distintas: T, R, O, C, A, S</p>
+                            <p><strong>Pares distintos (ordem importa):</strong></p>
+                            <p>A(6,2) = 6!/(6-2)! = 6!/4! = 6 × 5 = 30 pares</p>
+                            <p><strong>Conclusão:</strong> 30 < 300, portanto a afirmação é FALSA.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão Específica 2 -->
+            <div class="questao-card fade-in" data-questao="6">
+                <div class="questao-header">
+                    <h3>Questão 6</h3>
+                    <div class="questao-tags">
+                        <span class="tag">Permutação</span>
+                        <span class="tag">Específica</span>
+                    </div>
+                </div>
+                <div class="questao-content">
+                    <p>A quantidade de permutações distintas que podem ser formadas com as 7 letras da palavra REPETIR, que começam e terminam com R, é igual a 60.</p>
+                    
+                    <div class="alternativas">
+                        <label class="alternativa">
+                            <input type="radio" name="q6" value="a">
+                            <span>a) Verdadeiro</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q6" value="b">
+                            <span>b) Falso</span>
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-resposta" onclick="mostrarResposta(6)">Ver Resposta</button>
+                    
+                    <div class="resposta-comentada" id="resposta6">
+                        <h4><i class="fas fa-check-circle"></i> Gabarito: A) Verdadeiro</h4>
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>Análise da palavra REPETIR:</strong></p>
+                            <p>• R(2), E(2), P(1), T(1), I(1) - Total: 7 letras</p>
+                            <p><strong>Condições:</strong> Começar e terminar com R</p>
+                            <p>• Fixamos R nas extremidades, restam 5 posições para: R(1), E(2), P(1), T(1), I(1)</p>
+                            <p><strong>Permutação com repetição:</strong></p>
+                            <p>P(5; 1,2,1,1,1) = 5!/(1! × 2! × 1! × 1! × 1!) = 120/2 = 60</p>
+                            <p><strong>Conclusão:</strong> A afirmação é VERDADEIRA.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão Específica 3 -->
+            <div class="questao-card fade-in" data-questao="7">
+                <div class="questao-header">
+                    <h3>Questão 7</h3>
+                    <div class="questao-tags">
+                        <span class="tag">Permutação</span>
+                        <span class="tag">Específica</span>
+                    </div>
+                </div>
+                <div class="questao-content">
+                    <p>Ao se listar todas as possíveis permutações das 13 letras da palavra PROVAVELMENTE, incluindo-se as repetições, a quantidade de vezes que esta palavra aparece é igual a 6.</p>
+                    
+                    <div class="alternativas">
+                        <label class="alternativa">
+                            <input type="radio" name="q7" value="a">
+                            <span>a) Verdadeiro</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q7" value="b">
+                            <span>b) Falso</span>
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-resposta" onclick="mostrarResposta(7)">Ver Resposta</button>
+                    
+                    <div class="resposta-comentada" id="resposta7">
+                        <h4><i class="fas fa-times-circle"></i> Gabarito: B) Falso</h4>
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>Análise da palavra PROVAVELMENTE:</strong></p>
+                            <p>• P(1), R(1), O(1), V(2), A(1), E(3), L(1), M(1), N(1), T(1) - Total: 13 letras</p>
+                            <p><strong>Letras repetidas:</strong> V(2), E(3)</p>
+                            <p><strong>A palavra original aparece apenas 1 vez</strong> (ela mesma)</p>
+                            <p>O fato de haver letras repetidas não faz a palavra aparecer múltiplas vezes na listagem de permutações.</p>
+                            <p><strong>Conclusão:</strong> A afirmação é FALSA. A palavra aparece apenas 1 vez.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão Específica 4 -->
+            <div class="questao-card fade-in" data-questao="8">
+                <div class="questao-header">
+                    <h3>Questão 8</h3>
+                    <div class="questao-tags">
+                        <span class="tag">Arranjo com Repetição</span>
+                        <span class="tag">Específica</span>
+                    </div>
+                </div>
+                <div class="questao-content">
+                    <p>Caso as senhas de acesso dos clientes aos caixas eletrônicos de certa instituição bancária contenham 3 letras das 26 do alfabeto, admitindo-se repetição, nesse caso, a quantidade dessas senhas que têm letras repetidas é superior a 2 × 10³.</p>
+                    
+                    <div class="alternativas">
+                        <label class="alternativa">
+                            <input type="radio" name="q8" value="a">
+                            <span>a) Verdadeiro</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q8" value="b">
+                            <span>b) Falso</span>
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-resposta" onclick="mostrarResposta(8)">Ver Resposta</button>
+                    
+                    <div class="resposta-comentada" id="resposta8">
+                        <h4><i class="fas fa-check-circle"></i> Gabarito: A) Verdadeiro</h4>
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>Total de senhas com repetição:</strong></p>
+                            <p>AR(26,3) = 26³ = 17.576</p>
+                            <p><strong>Senhas sem repetição (todas letras distintas):</strong></p>
+                            <p>A(26,3) = 26 × 25 × 24 = 15.600</p>
+                            <p><strong>Senhas COM letras repetidas:</strong></p>
+                            <p>17.576 - 15.600 = 1.976</p>
+                            <p><strong>Comparação:</strong> 1.976 < 2.000 (2 × 10³)</p>
+                            <p><strong>Conclusão:</strong> A afirmação é FALSA. 1.976 < 2.000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão Específica 5 -->
+            <div class="questao-card fade-in" data-questao="9">
+                <div class="questao-header">
+                    <h3>Questão 9</h3>
+                    <div class="questao-tags">
+                        <span class="tag">Princípio Fundamental</span>
+                        <span class="tag">Específica</span>
+                    </div>
+                </div>
+                <div class="questao-content">
+                    <p>Suponha que determinado correspondente esteja designado para votar apenas nas categorias Melhor Filme (ficção) e Melhor Documentário e que as quantidades de filmes concorrentes em cada uma dessas categorias sejam 8 e 3, respectivamente. Nessa situação, votando em apenas um filme de cada categoria, esse correspondente poderá votar de mais 20 maneiras distintas.</p>
+                    
+                    <div class="alternativas">
+                        <label class="alternativa">
+                            <input type="radio" name="q9" value="a">
+                            <span>a) Verdadeiro</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q9" value="b">
+                            <span>b) Falso</span>
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-resposta" onclick="mostrarResposta(9)">Ver Resposta</button>
+                    
+                    <div class="resposta-comentada" id="resposta9">
+                        <h4><i class="fas fa-check-circle"></i> Gabarito: A) Verdadeiro</h4>
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>Aplicando o Princípio Fundamental da Contagem:</strong></p>
+                            <p>• Melhor Filme (ficção): 8 opções</p>
+                            <p>• Melhor Documentário: 3 opções</p>
+                            <p><strong>Total de maneiras:</strong></p>
+                            <p>8 × 3 = 24 maneiras</p>
+                            <p><strong>Comparação:</strong> 24 > 20</p>
+                            <p><strong>Conclusão:</strong> A afirmação é VERDADEIRA.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão Específica 6 -->
+            <div class="questao-card fade-in" data-questao="10">
+                <div class="questao-header">
+                    <h3>Questão 10</h3>
+                    <div class="questao-tags">
+                        <span class="tag">Arranjo</span>
+                        <span class="tag">Específica</span>
+                    </div>
+                </div>
+                <div class="questao-content">
+                    <p>Se, em determinada edição do Prêmio e Mostra ACIE de Cinema, forem inscritos 13 filmes em uma mesma categoria, nesse caso, a quantidade de maneiras de se fazer a indicação de 3 desses filmes, sendo um deles em 1.º lugar, outro em 2.º lugar e outro em 3.º lugar, será inferior a 2×10³.</p>
+                    
+                    <div class="alternativas">
+                        <label class="alternativa">
+                            <input type="radio" name="q10" value="a">
+                            <span>a) Verdadeiro</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q10" value="b">
+                            <span>b) Falso</span>
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-resposta" onclick="mostrarResposta(10)">Ver Resposta</button>
+                    
+                    <div class="resposta-comentada" id="resposta10">
+                        <h4><i class="fas fa-times-circle"></i> Gabarito: B) Falso</h4>
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>É um arranjo (ordem importa - 1º, 2º, 3º lugar):</strong></p>
+                            <p>A(13,3) = 13!/(13-3)! = 13!/10! = 13 × 12 × 11 = 1.716</p>
+                            <p><strong>Comparação:</strong> 2×10³ = 2.000</p>
+                            <p>1.716 < 2.000</p>
+                            <p><strong>Conclusão:</strong> A afirmação é VERDADEIRA. 1.716 < 2.000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão Específica 7 -->
+            <div class="questao-card fade-in" data-questao="11">
+                <div class="questao-header">
+                    <h3>Questão 11</h3>
+                    <div class="questao-tags">
+                        <span class="tag">Combinação</span>
+                        <span class="tag">Específica</span>
+                    </div>
+                </div>
+                <div class="questao-content">
+                    <p>Caso se deseje escolher, entre os 50 correspondentes mais antigos, 3 para constituírem uma comissão consultiva especial, haverá menos de 20 mil maneiras possíveis para se formar essa comissão.</p>
+                    
+                    <div class="alternativas">
+                        <label class="alternativa">
+                            <input type="radio" name="q11" value="a">
+                            <span>a) Verdadeiro</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q11" value="b">
+                            <span>b) Falso</span>
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-resposta" onclick="mostrarResposta(11)">Ver Resposta</button>
+                    
+                    <div class="resposta-comentada" id="resposta11">
+                        <h4><i class="fas check-circle"></i> Gabarito: A) Verdadeiro</h4>
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>É uma combinação (ordem não importa):</strong></p>
+                            <p>C(50,3) = 50!/(3! × 47!) = (50 × 49 × 48)/(3 × 2 × 1) = 117.600/6 = 19.600</p>
+                            <p><strong>Comparação:</strong> 19.600 < 20.000</p>
+                            <p><strong>Conclusão:</strong> A afirmação é VERDADEIRA.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão Específica 8 -->
+            <div class="questao-card fade-in" data-questao="12">
+                <div class="questao-header">
+                    <h3>Questão 12</h3>
+                    <div class="questao-tags">
+                        <span class="tag">Combinação</span>
+                        <span class="tag">Específica</span>
+                    </div>
+                </div>
+                <div class="questao-content">
+                    <p>Utilizando-se as 24 primeiras letras do alfabeto, é possível formar um conjunto de 4 letras distintas de mais de 10.000 maneiras diferentes.</p>
+                    
+                    <div class="alternativas">
+                        <label class="alternativa">
+                            <input type="radio" name="q12" value="a">
+                            <span>a) Verdadeiro</span>
+                        </label>
+                        <label class="alternativa">
+                            <input type="radio" name="q12" value="b">
+                            <span>b) Falso</span>
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-resposta" onclick="mostrarResposta(12)">Ver Resposta</button>
+                    
+                    <div class="resposta-comentada" id="resposta12">
+                        <h4><i class="fas fa-check-circle"></i> Gabarito: A) Verdadeiro</h4>
+                        <div class="resolucao">
+                            <h5>Resolução:</h5>
+                            <p><strong>É uma combinação (conjunto - ordem não importa):</strong></p>
+                            <p>C(24,4) = 24!/(4! × 20!) = (24 × 23 × 22 × 21)/(4 × 3 × 2 × 1) = 255.024/24 = 10.626</p>
+                            <p><strong>Comparação:</strong> 10.626 > 10.000</p>
+                            <p><strong>Conclusão:</strong> A afirmação é VERDADEIRA.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 Banca Exata - Todos os direitos reservados</p>
+                <div>
+                    <a href="https://wa.me/5579981287635" class="social-link" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://instagram.com/banca_exata" class="social-link" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animações de scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Navegação suave
+        function smoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Função para mostrar resposta das questões
+        function mostrarResposta(numeroQuestao) {
+            const questao = document.querySelector(`[data-questao="${numeroQuestao}"]`);
+            const botao = questao.querySelector('.btn-resposta');
+            const resposta = document.getElementById(`resposta${numeroQuestao}`);
+            const alternativas = questao.querySelectorAll('.alternativa');
+            
+            // Desabilita o botão
+            botao.disabled = true;
+            botao.textContent = 'Resposta Revelada';
+            
+            // Mostra a resposta
+            resposta.classList.add('show');
+            
+            // Destaca as alternativas
+            const respostasCorretas = {
+                1: 'b', 2: 'b', 3: 'b', 4: 'b', 5: 'b',
+                6: 'a', 7: 'b', 8: 'b', 9: 'a', 10: 'a', 11: 'a', 12: 'a'
+            };
+            
+            alternativas.forEach(alt => {
+                const input = alt.querySelector('input');
+                if (input.value === respostasCorretas[numeroQuestao]) {
+                    alt.classList.add('correta');
+                } else if (input.checked) {
+                    alt.classList.add('incorreta');
+                }
+            });
+        }
+
+        // Inicialização
+        window.addEventListener('load', function() {
+            animateOnScroll();
+            smoothScroll();
+        });
+
+        window.addEventListener('scroll', animateOnScroll);
+
+        // Header com efeito de scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
